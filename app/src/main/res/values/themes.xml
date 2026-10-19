@@ -2,4 +2,12 @@
 <resources>
 
     <style name="Theme.Allianz" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Splash Screen Theme (Android 12+ / SplashScreen API) -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/allianz_blue</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.Allianz</item>
+    </style>
+
 </resources>

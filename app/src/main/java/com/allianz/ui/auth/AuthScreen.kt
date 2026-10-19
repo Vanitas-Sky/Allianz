@@ -108,8 +108,16 @@ private fun IdleStateContent(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
+        androidx.compose.foundation.Image(
+            painter = androidx.compose.ui.res.painterResource(id = com.allianz.R.drawable.ic_splash_logo),
+            contentDescription = "Logo Allianz",
+            modifier = Modifier.size(96.dp)
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
         Text(
-            text = "Bienvenido",
+            text = "Bienvenido a Allianz",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold
         )
