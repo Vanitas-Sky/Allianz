@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Colores corporativos Allianz y Discord -->
+    <color name="allianz_blue">#002B66</color>
+    <color name="allianz_light_blue">#0072CE</color>
+    <color name="allianz_navy">#001A40</color>
+    <color name="discord_blurple">#5865F2</color>
 </resources>

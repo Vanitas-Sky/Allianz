@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="192dp"
+    android:height="192dp"
+    android:viewportWidth="192"
+    android:viewportHeight="192">
+
+    <!-- Outer Decorative Subtle Ring -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#5865F2"
+        android:strokeWidth="4"
+        android:pathData="M 96,24 A 72,72 0 1,1 95.9,24 Z" />
+
+    <!-- Allianz Circle Emblem -->
+    <path
+        android:fillColor="#0072CE"
+        android:pathData="M 96,32 A 64,64 0 1,1 95.9,32 Z" />
+
+    <!-- Allianz 3 Vertical Pillars -->
+    <!-- Left Pillar -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 66,66 C 66,62.1 69.1,59 73,59 C 76.9,59 80,62.1 80,66 L 80,126 C 80,129.9 76.9,133 73,133 C 69.1,133 66,129.9 66,126 Z" />
+
+    <!-- Middle Pillar (Taller) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 89,52 C 89,48.1 92.1,45 96,45 C 99.9,45 103,48.1 103,52 L 103,140 C 103,143.9 99.9,147 96,147 C 92.1,147 89,143.9 89,140 Z" />
+
+    <!-- Right Pillar -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 112,66 C 112,62.1 115.1,59 119,59 C 122.9,59 126,62.1 126,66 L 126,126 C 126,129.9 122.9,133 119,133 C 115.1,133 112,129.9 112,126 Z" />
+</vector>
