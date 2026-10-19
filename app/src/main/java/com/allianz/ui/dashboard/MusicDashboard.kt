@@ -25,7 +25,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -47,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import com.allianz.data.model.DiscordUser
+import com.allianz.ui.about.AboutScreen
 
 // Colores del tema estilo TIDAL
 private val TidalBackground = Color(0xFF0D0E12)
@@ -77,64 +77,76 @@ fun MusicDashboard(
     modifier: Modifier = Modifier
 ) {
     var showProfileDialog by remember { mutableStateOf(false) }
+    var showAboutScreen by remember { mutableStateOf(false) }
 
-    // Modal de perfil de Discord al presionar el avatar
-    if (showProfileDialog) {
-        DiscordProfileDialog(
-            user = user,
-            onDismiss = { showProfileDialog = false },
-            onLogout = {
-                showProfileDialog = false
-                onLogout()
-            }
+    if (showAboutScreen) {
+        AboutScreen(
+            onBackClick = { showAboutScreen = false }
         )
-    }
+    } else {
+        // Modal de perfil de Discord al presionar el avatar
+        if (showProfileDialog) {
+            DiscordProfileDialog(
+                user = user,
+                onDismiss = { showProfileDialog = false },
+                onLogout = {
+                    showProfileDialog = false
+                    onLogout()
+                },
+                onOpenAbout = {
+                    showProfileDialog = false
+                    showAboutScreen = true
+                }
+            )
+        }
 
-    Scaffold(
-        containerColor = TidalBackground,
-        bottomBar = { MiniPlayer() },
-        modifier = modifier.fillMaxSize()
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            contentPadding = PaddingValues(bottom = 16.dp)
-        ) {
-            // Header con logo TIDAL/ALLIANZ y botón de perfil de Discord en la esquina superior derecha
-            item {
-                DashboardHeader(
-                    user = user,
-                    onProfileClick = { showProfileDialog = true }
-                )
-            }
+        Scaffold(
+            containerColor = TidalBackground,
+            bottomBar = { MiniPlayer() },
+            modifier = modifier.fillMaxSize()
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentPadding = PaddingValues(bottom = 16.dp)
+            ) {
+                // Header con logo TIDAL/ALLIANZ y botón de perfil de Discord en la esquina superior derecha
+                item {
+                    DashboardHeader(
+                        user = user,
+                        onProfileClick = { showProfileDialog = true },
+                        onAboutClick = { showAboutScreen = true }
+                    )
+                }
 
-            // Saludo de bienvenida personalizado
-            item {
-                GreetingSection(user = user)
-            }
+                // Saludo de bienvenida personalizado
+                item {
+                    GreetingSection(user = user)
+                }
 
-            // Grilla de Acceso Rápido
-            item {
-                QuickAccessSection()
-            }
+                // Grilla de Acceso Rápido
+                item {
+                    QuickAccessSection()
+                }
 
-            // Sección: Escuchado Recientemente
-            item {
-                SectionHeader(title = "Escuchado recientemente")
-                RecentList()
-            }
+                // Sección: Escuchado Recientemente
+                item {
+                    SectionHeader(title = "Escuchado recientemente")
+                    RecentList()
+                }
 
-            // Sección: Álbumes Destacados (Hi-Res / MAX)
-            item {
-                SectionHeader(title = "Novedades en Alta Fidelidad (MAX)")
-                FeaturedAlbumsList()
-            }
+                // Sección: Álbumes Destacados (Hi-Res / MAX)
+                item {
+                    SectionHeader(title = "Novedades en Alta Fidelidad (MAX)")
+                    FeaturedAlbumsList()
+                }
 
-            // Sección: Artistas Populares
-            item {
-                SectionHeader(title = "Artistas populares")
-                ArtistsList()
+                // Sección: Artistas Populares
+                item {
+                    SectionHeader(title = "Artistas populares")
+                    ArtistsList()
+                }
             }
         }
     }
@@ -143,7 +155,8 @@ fun MusicDashboard(
 @Composable
 private fun DashboardHeader(
     user: DiscordUser,
-    onProfileClick: () -> Unit
+    onProfileClick: () -> Unit,
+    onAboutClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -176,20 +189,48 @@ private fun DashboardHeader(
             }
         }
 
-        // Botón de Perfil con el Avatar de Discord en la esquina superior
-        Box(
-            modifier = Modifier
-                .size(44.dp)
-                .clip(CircleShape)
-                .border(2.dp, TidalCyan, CircleShape)
-                .clickable { onProfileClick() }
-        ) {
-            AsyncImage(
-                model = user.getAvatarUrl(),
-                contentDescription = "Perfil de Discord",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            // Botón "Acerca de"
+            Surface(
+                color = TidalCardBg,
+                shape = RoundedCornerShape(20.dp),
+                modifier = Modifier
+                    .padding(end = 10.dp)
+                    .clickable { onAboutClick() }
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                ) {
+                    Text(
+                        text = "ℹ️",
+                        fontSize = 12.sp
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "Acerca de",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TidalTextPrimary
+                    )
+                }
+            }
+
+            // Botón de Perfil con el Avatar de Discord en la esquina superior
+            Box(
+                modifier = Modifier
+                    .size(42.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, TidalCyan, CircleShape)
+                    .clickable { onProfileClick() }
+            ) {
+                AsyncImage(
+                    model = user.getAvatarUrl(),
+                    contentDescription = "Perfil de Discord",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 }
@@ -521,7 +562,8 @@ private fun MiniPlayer() {
 fun DiscordProfileDialog(
     user: DiscordUser,
     onDismiss: () -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onOpenAbout: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(
@@ -602,7 +644,22 @@ fun DiscordProfileDialog(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Botón para ir a Acerca De
+                OutlinedButton(
+                    onClick = onOpenAbout,
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Acerca de (Equipo & Materia)",
+                        fontWeight = FontWeight.SemiBold,
+                        color = TidalCyan
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // Botón Cerrar Sesión
                 Button(
